@@ -1,0 +1,29 @@
+---
+- name: sprawdz grupy w systemie
+  getent:
+    database: group
+    split: ':'
+
+- debug:
+    var: ansible_facts.getent_group
+
+- name: tworze grupe
+  group:
+    name: panda
+    state: present
+
+- name: tworze usera
+  user:
+    name: panda
+    shell: /bin/bash
+    state: present
+    append: yes
+    groups:
+      - panda
+      - sudo
+
+- name: skopiuj klucz usera vagrant do usera panda
+  authorized_key:
+    user: panda
+    state: present
+    key: "{{ lookup('file', '/home/vagrant/.ssh/authorized_keys') }}"

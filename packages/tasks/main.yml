@@ -1,0 +1,9 @@
+---
+- name: instaluje przez package
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - net-tools
+    - unzip
+
